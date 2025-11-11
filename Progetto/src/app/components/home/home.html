@@ -1,0 +1,51 @@
+<div class="row justify-content-center">
+  <div class="col-md-8">
+    <div class="card shadow">
+      <div class="card-header bg-primary text-white text-center">
+        <h2 class="mb-0">Barzelletta Casuale</h2>
+      </div>
+      
+      <div class="card-body text-center p-4">
+        <!-- Stato di caricamento -->
+        <div *ngIf="isLoading" class="text-center">
+          <div class="spinner-border text-primary" role="status">
+            <span class="visually-hidden">Caricamento...</span>
+          </div>
+          <p class="mt-2">Sto cercando una barzelletta divertente...</p>
+        </div>
+
+        <!-- Stato di errore -->
+        <div *ngIf="error && !isLoading" class="alert alert-danger">
+          {{ error }}
+        </div>
+
+        <!-- Barzelletta -->
+        <div *ngIf="joke && !isLoading" class="my-4">
+          <p class="fs-4 fw-light">{{ joke.setup }}</p>
+          
+          <div *ngIf="!showPunchline" class="mt-4">
+            <button class="btn btn-warning btn-lg" (click)="revealPunchline()">
+              🎭 Mostra la Battuta
+            </button>
+          </div>
+          
+          <div *ngIf="showPunchline" class="mt-4">
+            <div class="alert alert-success fs-5">
+              <strong>🤣 {{ joke.punchline }}</strong>
+            </div>
+            <small class="text-muted">Categoria: {{ joke.type }}</small>
+          </div>
+        </div>
+
+        <!-- Pulsante per nuova barzelletta -->
+        <div class="mt-4">
+          <button class="btn btn-primary btn-lg" 
+                  (click)="loadRandomJoke()"
+                  [disabled]="isLoading">
+            {{ isLoading ? 'Caricamento...' : '🎲 Nuova Barzelletta' }}
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
