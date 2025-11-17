@@ -1,50 +1,71 @@
+<!-- Contenitore principale centrato -->
 <div class="row justify-content-center">
-  <div class="col-md-8">
-    <div class="card shadow">
-      <div class="card-header bg-primary text-white text-center">
-        <h2 class="mb-0">Barzelletta Casuale</h2>
+  <div class="col-12 col-md-8 col-lg-6">
+    
+    <!-- Card che contiene la barzelletta -->
+    <div class="card border-0 shadow-lg">
+      
+      <!-- Intestazione della card -->
+      <div class="card-header bg-gradient-primary text-white text-center py-4">
+        <h1 class="display-6 fw-bold mb-0">🎭 Barzelletta del Giorno</h1>
       </div>
       
-      <div class="card-body text-center p-4">
-        <!-- Stato di caricamento -->
-        <div *ngIf="inCaricamento" class="text-center">
-          <div class="spinner-border text-primary" role="status">
+      <!-- Corpo della card -->
+      <div class="card-body text-center p-5">
+        
+        <!-- SEZIONE CARICAMENTO - visibile solo quando inCaricamento è true -->
+        <div *ngIf="inCaricamento" class="text-center py-5">
+          <!-- Spinner di Bootstrap per indicare il caricamento -->
+          <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;" role="status">
             <span class="visually-hidden">Caricamento...</span>
           </div>
-          <p class="mt-2">Sto cercando una barzelletta divertente...</p>
+          <p class="text-muted fs-5">Sto cercando una barzelletta divertente...</p>
         </div>
 
-        <!-- Stato di errore -->
-        <div *ngIf="errore && !inCaricamento" class="alert alert-danger">
+        <!-- SEZIONE ERRORE - visibile solo se c'è un errore e non stiamo caricando -->
+        <div *ngIf="errore && !inCaricamento" class="alert alert-danger rounded-3">
+          <i class="bi bi-exclamation-triangle me-2"></i>
           {{ errore }}
         </div>
 
-        <!-- Barzelletta -->
+        <!-- SEZIONE BARZELLETTA - visibile quando abbiamo una barzelletta e non stiamo caricando -->
         <div *ngIf="barzelletta && !inCaricamento" class="my-4">
-          <p class="fs-4 fw-light">{{ barzelletta.setup }}</p>
           
+          <!-- Contenitore per l'introduzione della barzelletta -->
+          <div class="bg-light rounded-3 p-4 mb-4">
+            <p class="fs-4 fst-italic text-dark mb-0">"{{ barzelletta.setup }}"</p>
+          </div>
+          
+          <!-- PULSANTE MOSTRA BATTUTA - visibile solo se la battuta è nascosta -->
           <div *ngIf="!mostraBattuta" class="mt-4">
-            <button class="btn btn-warning btn-lg" (click)="rivelareBattuta()">
-              🎭 Mostra la Battuta
+            <button class="btn btn-warning btn-lg rounded-pill px-5 py-3 fw-bold" 
+                    (click)="rivelareBattuta()">
+              🎯 Mostra la Battuta
             </button>
           </div>
           
+          <!-- BATTUTA RIVELATA - visibile quando mostraBattuta è true -->
           <div *ngIf="mostraBattuta" class="mt-4">
-            <div class="alert alert-success fs-5">
-              <strong>🤣 {{ barzelletta.punchline }}</strong>
+            <div class="alert alert-success rounded-3 border-0 shadow-sm">
+              <p class="fs-3 fw-bold mb-2">🤣 {{ barzelletta.punchline }}</p>
+              <small class="text-muted">
+                <i class="bi bi-tag me-1"></i>
+                Categoria: {{ barzelletta.type }}
+              </small>
             </div>
-            <small class="text-muted">Categoria: {{ barzelletta.type }}</small>
           </div>
         </div>
 
-        <!-- Pulsante per nuova barzelletta -->
-        <div class="mt-4">
-          <button class="btn btn-primary btn-lg" 
+        <!-- PULSANTE NUOVA BARZELLETTA - sempre visibile tranne durante il caricamento -->
+        <div class="mt-5">
+          <button class="btn btn-primary btn-lg rounded-pill px-5 py-3 fw-bold shadow" 
                   (click)="caricareBarzellettaCasuale()"
                   [disabled]="inCaricamento">
+            <i class="bi bi-arrow-repeat me-2"></i>
             {{ inCaricamento ? 'Caricamento...' : '🎲 Nuova Barzelletta' }}
           </button>
         </div>
+
       </div>
     </div>
   </div>

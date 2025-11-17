@@ -1,6 +1,8 @@
 import { bootstrapApplication } from '@angular/platform-browser';
 import { appConfig } from './app/app.config';
-import { App } from './app/app';
+import { AppComponent } from './app/app';
 
-bootstrapApplication(App, appConfig)
-  .catch((err) => console.error(err));
+// Questo è il file di avvio dell'applicazione Angular
+// bootstrapApplication è la funzione che "accende" l'app Angular
+bootstrapApplication(AppComponent, appConfig)
+  .catch((err) => console.error(err)); // Gestisce eventuali errori di avvio

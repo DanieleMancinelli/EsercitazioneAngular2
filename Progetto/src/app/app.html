@@ -1,14 +1,34 @@
-<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+<!-- Navbar - barra di navigazione in alto -->
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
   <div class="container">
-    <a class="navbar-brand" routerLink="/">{{ title }}</a>
-    <div class="navbar-nav">
-      <a class="nav-link" routerLink="/">Home</a>
-      <a class="nav-link" routerLink="/jokes-list">Lista Barzellette</a>
-      <a class="nav-link" routerLink="/categories">Categorie</a>
+    <!-- Logo/Titolo dell'app - cliccabile per tornare alla homepage -->
+    <a class="navbar-brand fw-bold" routerLink="/">
+      <span class="fs-4">😄 JokeApp</span>
+    </a>
+    
+    <!-- Bottone per il menu hamburger (visibile solo su mobile) -->
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+    <!-- Contenuto della navbar che si espande/contrae -->
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <!-- Menu di navigazione - allineato a destra -->
+      <div class="navbar-nav ms-auto">
+        <!-- Link alla homepage - routerLinkActive aggiunge la classe 'active' quando siamo su questa rotta -->
+        <a class="nav-link fs-5" routerLink="/" routerLinkActive="active">Home</a>
+        <!-- Link alla pagina lista barzellette -->
+        <a class="nav-link fs-5" routerLink="/jokes-list" routerLinkActive="active">Lista Barzellette</a>
+        <!-- Link alla pagina categorie -->
+        <a class="nav-link fs-5" routerLink="/categories" routerLinkActive="active">Categorie</a>
+      </div>
     </div>
   </div>
 </nav>
 
-<div class="container mt-4">
+<!-- Contenuto principale dell'applicazione -->
+<main class="container-fluid bg-light min-vh-100 py-4">
+  <!-- Componente che mostra il contenuto della rotta corrente -->
+  <!-- Quando navighi, il componente della rotta appare qui -->
   <router-outlet></router-outlet>
-</div>
+</main>

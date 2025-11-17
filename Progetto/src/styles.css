@@ -1,1 +1,21 @@
-/* You can add global styles to this file, and also import other style files */
+/* Stili personalizzati */
+.hover-shadow {
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.hover-shadow:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 25px rgba(0,0,0,0.15) !important;
+}
+
+.bg-gradient-primary {
+  background: linear-gradient(135deg, #0d6efd 0%, #0a58ca 100%);
+}
+
+.rounded-3 {
+  border-radius: 1rem !important;
+}
+
+.min-vh-100 {
+  min-height: 100vh;
+}

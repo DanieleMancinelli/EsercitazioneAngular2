@@ -1,57 +1,93 @@
 <div class="row">
   <div class="col-12">
-    <div class="d-flex justify-content-between align-items-center mb-4">
-      <h2>10 Barzellette Casuali</h2>
-      <button class="btn btn-primary" 
+    
+    <!-- INTESTAZIONE DELLA PAGINA con titolo e pulsante ricarica -->
+    <div class="d-flex justify-content-between align-items-center mb-5">
+      <div>
+        <!-- Titolo principale della pagina -->
+        <h1 class="display-6 fw-bold text-primary">😂 10 Barzellette Casuali</h1>
+        <!-- Sottotitolo descrittivo -->
+        <p class="text-muted">Scopri le barzellette più divertenti</p>
+      </div>
+      
+      <!-- PULSANTE RICARICA - ricarica la lista di barzellette -->
+      <button class="btn btn-outline-primary rounded-pill px-4" 
               (click)="ricaricareBarzellette()"
               [disabled]="inCaricamento">
-        {{ inCaricamento ? 'Caricamento...' : '🔄 Ricarica' }}
+        <i class="bi bi-arrow-clockwise me-2"></i>
+        <!-- Testo dinamico: cambia in base allo stato di caricamento -->
+        {{ inCaricamento ? 'Caricamento...' : 'Ricarica' }}
       </button>
     </div>
 
-    <!-- Messaggio di caricamento -->
+    <!-- SEZIONE CARICAMENTO - mostra uno spinner durante il fetch dei dati -->
     <div *ngIf="inCaricamento" class="text-center py-5">
-      <div class="spinner-border text-primary" role="status">
+      <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;" role="status">
         <span class="visually-hidden">Caricamento...</span>
       </div>
-      <p class="mt-2">Sto caricando le barzellette...</p>
+      <p class="text-muted fs-5">Sto caricando le barzellette...</p>
     </div>
 
-    <!-- Messaggio di errore -->
-    <div *ngIf="errore && !inCaricamento" class="alert alert-danger">
+    <!-- SEZIONE ERRORE - mostra messaggio di errore se il caricamento fallisce -->
+    <div *ngIf="errore && !inCaricamento" class="alert alert-danger rounded-3">
+      <i class="bi bi-exclamation-triangle me-2"></i>
       {{ errore }}
+      <!-- Pulsante per ritentare il caricamento -->
       <button class="btn btn-sm btn-outline-danger ms-3" (click)="ricaricareBarzellette()">
         Riprova
       </button>
     </div>
 
-    <!-- Lista delle barzellette -->
-    <div *ngIf="!inCaricamento && barzellette.length > 0" class="row">
-      <div *ngFor="let barzelletta of barzellette; let indice = index" class="col-md-6 mb-4">
-        <div class="card h-100 shadow-sm">
-          <div class="card-body">
-            <h5 class="card-title">Barzelletta #{{ indice + 1 }}</h5>
-            <p class="card-text">{{ barzelletta.setup }}</p>
-            <div class="mt-3">
-              <button class="btn btn-outline-primary btn-sm" 
-                      (click)="rivelareBattuta(barzelletta)">
-                👀 Mostra Battuta
-              </button>
+    <!-- SEZIONE LISTA BARZELLETTE - mostra le barzellette quando il caricamento è completato -->
+    <div *ngIf="!inCaricamento && barzellette.length > 0" class="row g-4">
+      
+      <!-- LOOP *ngFor - crea una card per ogni barzelletta nell'array -->
+      <!-- barzelletta: variabile temporanea che rappresenta l'elemento corrente -->
+      <!-- i: indice della barzelletta nell'array (parte da 0) -->
+      <div *ngFor="let barzelletta of barzellette; let i = index" class="col-12 col-md-6 col-lg-4">
+        
+        <!-- CARD SINGOLA BARZELLETTA -->
+        <div class="card h-100 border-0 shadow-sm hover-shadow">
+          <div class="card-body d-flex flex-column">
+            
+            <!-- INTESTAZIONE CARD con numero e categoria -->
+            <div class="d-flex justify-content-between align-items-start mb-3">
+              <!-- Badge con il numero progressivo della barzelletta -->
+              <span class="badge bg-primary rounded-pill">#{{ i + 1 }}</span>
+              <!-- Badge con la categoria della barzelletta -->
+              <span class="badge bg-secondary rounded-pill">{{ barzelletta.type }}</span>
             </div>
-            <div *ngIf="barzelletta.mostraBattuta" class="mt-3">
-              <div class="alert alert-success">
-                <strong>{{ barzelletta.punchline }}</strong>
+            
+            <!-- TESTO DELLA BARZELLETTA (introduzione/setup) -->
+            <p class="card-text flex-grow-1 fst-italic">"{{ barzelletta.setup }}"</p>
+            
+            <!-- AREA INTERATTIVA in fondo alla card -->
+            <div class="mt-auto">
+              
+              <!-- PULSANTE MOSTRA/NASCONDI BATTUTA -->
+              <button class="btn btn-outline-primary w-100 rounded-pill" 
+                      (click)="rivelareBattuta(barzelletta)">
+                <i class="bi bi-eye me-2"></i>
+                <!-- Testo dinamico del pulsante -->
+                {{ barzelletta.mostraBattuta ? 'Nascondi' : 'Mostra' }} Battuta
+              </button>
+              
+              <!-- BATTUTA RIVELATA - visibile solo se mostraBattuta è true per questa barzelletta -->
+              <div *ngIf="barzelletta.mostraBattuta" class="mt-3">
+                <div class="alert alert-success rounded-3 mb-0">
+                  <p class="fw-bold mb-0">🎭 {{ barzelletta.punchline }}</p>
+                </div>
               </div>
-              <small class="text-muted">Categoria: {{ barzelletta.type }}</small>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- Nessuna barzelletta trovata -->
+    <!-- STATO VUOTO - mostra se non ci sono barzellette ma non ci sono errori -->
     <div *ngIf="!inCaricamento && barzellette.length === 0 && !errore" class="text-center py-5">
-      <p>Nessuna barzelletta trovata.</p>
+      <i class="bi bi-emoji-frown display-1 text-muted"></i>
+      <p class="fs-5 text-muted mt-3">Nessuna barzelletta trovata.</p>
     </div>
   </div>
 </div>
