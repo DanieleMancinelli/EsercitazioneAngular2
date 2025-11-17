@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { JokeService } from '../../services/joke';
+import { JokeService } from '../../services/joke'; 
 
 @Component({
   selector: 'app-home',
@@ -10,36 +10,36 @@ import { JokeService } from '../../services/joke';
   styleUrls: ['./home.css']
 })
 export class HomeComponent implements OnInit {
-  joke: any = null;
-  showPunchline = false;
-  isLoading = true;
-  error: string | null = null;
+  barzelletta: any = null;
+  mostraBattuta = false;
+  inCaricamento = true;
+  errore: string | null = null;
 
   constructor(private jokeService: JokeService) {}
 
   ngOnInit() {
-    this.loadRandomJoke();
+    this.caricareBarzellettaCasuale();
   }
 
-  loadRandomJoke() {
-    this.isLoading = true;
-    this.showPunchline = false;
-    this.error = null;
+  caricareBarzellettaCasuale() {
+    this.inCaricamento = true;
+    this.mostraBattuta = false;
+    this.errore = null;
 
-    this.jokeService.getRandomJoke().subscribe({
-      next: (data: any) => {
-        this.joke = data;
-        this.isLoading = false;
+    this.jokeService.ottenereBarzellettaCasuale().subscribe({
+      next: (dati: any) => {
+        this.barzelletta = dati;
+        this.inCaricamento = false;
       },
-      error: (error) => {
-        this.error = 'Errore nel caricamento della barzelletta';
-        this.isLoading = false;
-        console.error('Error loading joke:', error);
+      error: (errore) => {
+        this.errore = 'Errore nel caricamento della barzelletta';
+        this.inCaricamento = false;
+        console.error('Errore:', errore);
       }
     });
   }
 
-  revealPunchline() {
-    this.showPunchline = true;
+  rivelareBattuta() {
+    this.mostraBattuta = true;
   }
 }

@@ -1,1 +1,85 @@
-<p>categories works!</p>
+<div class="row">
+  <div class="col-12">
+    <h2 class="mb-4">Barzellette per Categoria</h2>
+
+    <!-- Messaggio di caricamento categorie -->
+    <div *ngIf="inCaricamento" class="text-center py-5">
+      <div class="spinner-border text-primary" role="status">
+        <span class="visually-hidden">Caricamento...</span>
+      </div>
+      <p class="mt-2">Sto caricando le categorie...</p>
+    </div>
+
+    <!-- Messaggio di errore -->
+    <div *ngIf="errore && !inCaricamento" class="alert alert-danger">
+      {{ errore }}
+      <button class="btn btn-sm btn-outline-danger ms-3" (click)="caricareCategorie()">
+        Riprova
+      </button>
+    </div>
+
+    <!-- Sezione categorie -->
+    <div *ngIf="!inCaricamento && categorie.length > 0">
+      <!-- Pulsanti per selezionare la categoria -->
+      <div class="mb-4">
+        <h4 class="mb-3">Scegli una categoria:</h4>
+        <div class="d-flex flex-wrap gap-2">
+          <button *ngFor="let categoria of categorie" 
+                  class="btn"
+                  [class.btn-primary]="categoria === categoriaSelezionata"
+                  [class.btn-outline-primary]="categoria !== categoriaSelezionata"
+                  (click)="selezionareCategoria(categoria)">
+            {{ categoria }}
+          </button>
+        </div>
+      </div>
+
+      <!-- Categoria selezionata -->
+      <div *ngIf="categoriaSelezionata" class="mt-4">
+        <h4 class="mb-3">
+          Barzellette di: 
+          <span class="badge bg-secondary">{{ categoriaSelezionata }}</span>
+        </h4>
+
+        <!-- Caricamento barzellette -->
+        <div *ngIf="inCaricamentoBarzellette" class="text-center py-3">
+          <div class="spinner-border spinner-border-sm text-primary" role="status">
+            <span class="visually-hidden">Caricamento...</span>
+          </div>
+          <span class="ms-2">Caricamento barzellette...</span>
+        </div>
+
+        <!-- Lista barzellette della categoria -->
+        <div *ngIf="!inCaricamentoBarzellette && barzellette.length > 0" class="row">
+          <div *ngFor="let barzelletta of barzellette; let indice = index" class="col-md-6 mb-3">
+            <div class="card h-100">
+              <div class="card-body">
+                <h6 class="card-title">Barzelletta #{{ indice + 1 }}</h6>
+                <p class="card-text">{{ barzelletta.setup }}</p>
+                <button class="btn btn-outline-primary btn-sm" 
+                        (click)="rivelareBattuta(barzelletta)">
+                  👀 {{ barzelletta.mostraBattuta ? 'Nascondi' : 'Mostra' }} Battuta
+                </button>
+                <div *ngIf="barzelletta.mostraBattuta" class="mt-3">
+                  <div class="alert alert-success">
+                    <strong>{{ barzelletta.punchline }}</strong>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Nessuna barzelletta nella categoria -->
+        <div *ngIf="!inCaricamentoBarzellette && barzellette.length === 0" class="text-center py-5">
+          <p>Nessuna barzelletta trovata per questa categoria.</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- Nessuna categoria disponibile -->
+    <div *ngIf="!inCaricamento && categorie.length === 0 && !errore" class="text-center py-5">
+      <p>Nessuna categoria disponibile.</p>
+    </div>
+  </div>
+</div>

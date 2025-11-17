@@ -5,23 +5,23 @@ import { HttpClient } from '@angular/common/http';
   providedIn: 'root',
 })
 export class JokeService {
-  private baseUrl = 'https://official-joke-api.appspot.com';
+  private urlBase = 'https://official-joke-api.appspot.com';
 
   constructor(private http: HttpClient) {}
 
-  getRandomJoke() {
-    return this.http.get(`${this.baseUrl}/random_joke`);
+  ottenereBarzellettaCasuale() {
+    return this.http.get(`${this.urlBase}/random_joke`);
   }
 
-  getTenJokes() {
-    return this.http.get(`${this.baseUrl}/random_ten`);
+  ottenereDieciBarzellette() {
+    return this.http.get(`${this.urlBase}/random_ten`);
   }
 
-  getJokesByType(type: string) {
-    return this.http.get(`${this.baseUrl}/jokes/${type}/ten`);
+  ottenereBarzellettePerTipo(tipo: string) {
+    return this.http.get(`${this.urlBase}/jokes/${tipo}/ten`);
   }
 
-  getJokeTypes() {
-    return this.http.get(`${this.baseUrl}/types`);
+  ottenereTipiBarzellette() {
+    return this.http.get(`${this.urlBase}/types`);
   }
 }
