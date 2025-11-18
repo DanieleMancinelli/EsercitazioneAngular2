@@ -1,21 +1,22 @@
-<!-- Navbar - barra di navigazione in alto -->
+<!-- Navbar - barra di navigazione principale dell'applicazione -->
 <nav class="navbar navbar-expand-lg navbar-dark bg-primary shadow">
   <div class="container">
-    <!-- Logo/Titolo dell'app - cliccabile per tornare alla homepage -->
+    <!-- Logo dell'applicazione con sottotitolo educativo -->
     <a class="navbar-brand fw-bold" routerLink="/">
       <span class="fs-4">😄 JokeApp</span>
+      <!-- NUOVO: Sottotitolo che spiega lo scopo educativo dell'app -->
+      <small class="d-block fs-6 opacity-75">Impara l'inglese divertendoti!</small>
     </a>
     
-    <!-- Bottone per il menu hamburger (visibile solo su mobile) -->
+    <!-- Bottone hamburger per il menu mobile -->
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
       <span class="navbar-toggler-icon"></span>
     </button>
     
-    <!-- Contenuto della navbar che si espande/contrae -->
+    <!-- Menu di navigazione -->
     <div class="collapse navbar-collapse" id="navbarNav">
-      <!-- Menu di navigazione - allineato a destra -->
       <div class="navbar-nav ms-auto">
-        <!-- Link alla homepage - routerLinkActive aggiunge la classe 'active' quando siamo su questa rotta -->
+        <!-- Link alla homepage -->
         <a class="nav-link fs-5" routerLink="/" routerLinkActive="active">Home</a>
         <!-- Link alla pagina lista barzellette -->
         <a class="nav-link fs-5" routerLink="/jokes-list" routerLinkActive="active">Lista Barzellette</a>
@@ -26,9 +27,7 @@
   </div>
 </nav>
 
-<!-- Contenuto principale dell'applicazione -->
+<!-- Contenuto principale dove vengono caricati i componenti delle varie pagine -->
 <main class="container-fluid bg-light min-vh-100 py-4">
-  <!-- Componente che mostra il contenuto della rotta corrente -->
-  <!-- Quando navighi, il componente della rotta appare qui -->
   <router-outlet></router-outlet>
 </main>

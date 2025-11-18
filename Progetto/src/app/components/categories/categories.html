@@ -1,100 +1,143 @@
 <div class="row">
   <div class="col-12">
-    <!-- TITOLO PRINCIPALE DELLA PAGINA -->
-    <h2 class="mb-4">Barzellette per Categoria</h2>
+    
+    <!-- INTESTAZIONE DELLA PAGINA con titolo -->
+    <div class="d-flex justify-content-between align-items-center mb-5">
+      <div>
+        <h1 class="display-6 fw-bold text-primary">📂 Barzellette per Categoria</h1>
+        <p class="text-muted">Esplora diversi tipi di humour in inglese</p>
+      </div>
+    </div>
 
     <!-- SEZIONE CARICAMENTO CATEGORIE -->
     <div *ngIf="inCaricamento" class="text-center py-5">
-      <div class="spinner-border text-primary" role="status">
+      <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;" role="status">
         <span class="visually-hidden">Caricamento...</span>
       </div>
-      <p class="mt-2">Sto caricando le categorie...</p>
+      <p class="text-muted fs-5">Sto caricando le categorie...</p>
     </div>
 
     <!-- SEZIONE ERRORE -->
-    <div *ngIf="errore && !inCaricamento" class="alert alert-danger">
+    <div *ngIf="errore && !inCaricamento" class="alert alert-danger rounded-3">
+      <i class="bi bi-exclamation-triangle me-2"></i>
       {{ errore }}
       <button class="btn btn-sm btn-outline-danger ms-3" (click)="caricareCategorie()">
         Riprova
       </button>
     </div>
 
-    <!-- SEZIONE PRINCIPALE - visibile quando le categorie sono caricate -->
-    <div *ngIf="!inCaricamento && categorie.length > 0">
+    <!-- SELEZIONE CATEGORIA - visibile quando le categorie sono caricate -->
+    <div *ngIf="!inCaricamento && categorie.length > 0" class="mb-5">
       
-      <!-- SELEZIONE CATEGORIA -->
-      <div class="mb-4">
-        <h4 class="mb-3">Scegli una categoria:</h4>
-        <!-- CONTENITORE FLESSIBILE per i pulsanti categoria -->
-        <div class="d-flex flex-wrap gap-2">
-          <!-- LOOP per creare un pulsante per ogni categoria -->
-          <button *ngFor="let categoria of categorie" 
-                  class="btn"
-                  <!-- APPLICA CLASSI CSS DINAMICAMENTE: -->
-                  <!-- Se è la categoria selezionata, usa btn-primary -->
-                  <!-- Altrimenti usa btn-outline-primary -->
-                  [class.btn-primary]="categoria === categoriaSelezionata"
-                  [class.btn-outline-primary]="categoria !== categoriaSelezionata"
-                  <!-- CLICK HANDLER - quando cliccato, seleziona questa categoria -->
-                  (click)="selezionareCategoria(categoria)">
-            {{ categoria }}
+      <!-- TITOLO SEZIONE CATEGORIE -->
+      <h4 class="mb-4">Scegli una categoria:</h4>
+      
+      <!-- CONTENITORE FLESSIBILE per i pulsanti categoria -->
+      <div class="d-flex flex-wrap gap-3">
+        <!-- LOOP per creare un pulsante per ogni categoria -->
+        <button 
+          *ngFor="let categoria of categorie" 
+          class="btn rounded-pill px-4 py-2"
+          [class.btn-primary]="categoria === categoriaSelezionata"
+          [class.btn-outline-primary]="categoria !== categoriaSelezionata"
+          (click)="selezionareCategoria(categoria)">
+          <i class="bi bi-tag me-2"></i>
+          {{ categoria }}
+        </button>
+      </div>
+    </div>
+
+    <!-- SEZIONE BARZELLETTE DELLA CATEGORIA SELEZIONATA -->
+    <div *ngIf="categoriaSelezionata && !inCaricamento" class="mt-4">
+      
+      <!-- TITOLO CON CATEGORIA SELEZIONATA E PULSANTE RICARICA BARZELLETTE -->
+      <div class="d-flex justify-content-between align-items-center mb-4">
+        <div>
+          <h3 class="fw-bold">
+            Barzellette di: 
+            <span class="badge bg-primary fs-6">{{ categoriaSelezionata }}</span>
+          </h3>
+        </div>
+        
+        <div class="d-flex align-items-center gap-3">
+          <!-- CONTATORE BARZELLETTE -->
+          <span class="badge bg-secondary fs-6">
+            {{ barzellette.length }} barzellette
+          </span>
+          
+          <!-- PULSANTE RICARICA BARZELLETTE DELLA CATEGORIA -->
+          <button class="btn btn-outline-primary rounded-pill px-4" 
+                  (click)="selezionareCategoria(categoriaSelezionata)"
+                  [disabled]="inCaricamentoBarzellette">
+            <i class="bi bi-arrow-clockwise me-2"></i>
+            {{ inCaricamentoBarzellette ? 'Caricamento...' : 'Ricarica' }}
           </button>
         </div>
       </div>
 
-      <!-- SEZIONE BARZELLETTE DELLA CATEGORIA SELEZIONATA -->
-      <div *ngIf="categoriaSelezionata" class="mt-4">
-        <!-- TITOLO CON CATEGORIA SELEZIONATA -->
-        <h4 class="mb-3">
-          Barzellette di: 
-          <!-- Badge che mostra la categoria attiva -->
-          <span class="badge bg-secondary">{{ categoriaSelezionata }}</span>
-        </h4>
-
-        <!-- CARICAMENTO BARZELLETTE -->
-        <div *ngIf="inCaricamentoBarzellette" class="text-center py-3">
-          <div class="spinner-border spinner-border-sm text-primary" role="status">
-            <span class="visually-hidden">Caricamento...</span>
-          </div>
-          <span class="ms-2">Caricamento barzellette...</span>
+      <!-- CARICAMENTO BARZELLETTE -->
+      <div *ngIf="inCaricamentoBarzellette" class="text-center py-5">
+        <div class="spinner-border text-primary mb-3" style="width: 3rem; height: 3rem;" role="status">
+          <span class="visually-hidden">Caricamento...</span>
         </div>
+        <p class="text-muted fs-5">Sto caricando le barzellette di {{ categoriaSelezionata }}...</p>
+      </div>
 
-        <!-- LISTA BARZELLETTE DELLA CATEGORIA -->
-        <div *ngIf="!inCaricamentoBarzellette && barzellette.length > 0" class="row">
-          <!-- LOOP per ogni barzelletta della categoria selezionata -->
-          <div *ngFor="let barzelletta of barzellette; let indice = index" class="col-md-6 mb-3">
-            <div class="card h-100">
-              <div class="card-body">
-                <!-- TITOLO BARZELLETTA con numero progressivo -->
-                <h6 class="card-title">Barzelletta #{{ indice + 1 }}</h6>
-                <!-- TESTO DELLA BARZELLETTA -->
-                <p class="card-text">{{ barzelletta.setup }}</p>
+      <!-- LISTA BARZELLETTE DELLA CATEGORIA - stile uguale a Joke List -->
+      <div *ngIf="!inCaricamentoBarzellette && barzellette.length > 0" class="row g-4">
+        
+        <!-- LOOP per ogni barzelletta della categoria selezionata -->
+        <div *ngFor="let barzelletta of barzellette; let indice = index" class="col-12 col-md-6 col-lg-4">
+          
+          <!-- CARD SINGOLA BARZELLETTA - stile identico a Joke List -->
+          <div class="card h-100 border-0 shadow-sm hover-shadow">
+            <div class="card-body d-flex flex-column">
+              
+              <!-- INTESTAZIONE CARD con numero e categoria -->
+              <div class="d-flex justify-content-between align-items-start mb-3">
+                <!-- Badge con il numero progressivo della barzelletta -->
+                <span class="badge bg-primary rounded-pill">#{{ indice + 1 }}</span>
+                <!-- Badge con la categoria della barzelletta -->
+                <span class="badge bg-secondary rounded-pill">{{ barzelletta.type }}</span>
+              </div>
+              
+              <!-- TESTO DELLA BARZELLETTA (introduzione/setup) -->
+              <p class="card-text flex-grow-1 fst-italic">"{{ barzelletta.setup }}"</p>
+              
+              <!-- AREA INTERATTIVA in fondo alla card -->
+              <div class="mt-auto">
+                
                 <!-- PULSANTE MOSTRA/NASCONDI BATTUTA -->
-                <button class="btn btn-outline-primary btn-sm" 
+                <button class="btn btn-outline-primary w-100 rounded-pill" 
                         (click)="rivelareBattuta(barzelletta)">
-                  👀 {{ barzelletta.mostraBattuta ? 'Nascondi' : 'Mostra' }} Battuta
+                  <i class="bi bi-eye me-2"></i>
+                  <!-- Testo dinamico del pulsante -->
+                  {{ barzelletta.mostraBattuta ? 'Nascondi' : 'Mostra' }} Battuta
                 </button>
-                <!-- BATTUTA RIVELATA -->
+                
+                <!-- BATTUTA RIVELATA - visibile solo se mostraBattuta è true per questa barzelletta -->
                 <div *ngIf="barzelletta.mostraBattuta" class="mt-3">
-                  <div class="alert alert-success">
-                    <strong>{{ barzelletta.punchline }}</strong>
+                  <div class="alert alert-success rounded-3 mb-0">
+                    <p class="fw-bold mb-0">🎭 {{ barzelletta.punchline }}</p>
                   </div>
                 </div>
               </div>
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- STATO VUOTO - nessuna barzelletta nella categoria -->
-        <div *ngIf="!inCaricamentoBarzellette && barzellette.length === 0" class="text-center py-5">
-          <p>Nessuna barzelletta trovata per questa categoria.</p>
-        </div>
+      <!-- STATO VUOTO - nessuna barzelletta nella categoria -->
+      <div *ngIf="!inCaricamentoBarzellette && barzellette.length === 0" class="text-center py-5">
+        <i class="bi bi-emoji-frown display-1 text-muted"></i>
+        <p class="fs-5 text-muted mt-3">Nessuna barzelletta trovata per la categoria {{ categoriaSelezionata }}.</p>
       </div>
     </div>
 
     <!-- STATO VUOTO - nessuna categoria disponibile -->
     <div *ngIf="!inCaricamento && categorie.length === 0 && !errore" class="text-center py-5">
-      <p>Nessuna categoria disponibile.</p>
+      <i class="bi bi-folder-x display-1 text-muted"></i>
+      <p class="fs-5 text-muted mt-3">Nessuna categoria disponibile.</p>
     </div>
   </div>
 </div>
